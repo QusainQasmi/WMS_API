@@ -14,7 +14,7 @@ namespace WMS_API.Data
         public DbSet<Locations> Locations { get; set; }
         public DbSet<Customers> Customers { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
-        public DbSet<StockMovement> Stocks { get; set; }
+        public DbSet<StockMovements> StockMovements { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
         public DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
         public DbSet<SalesOrder> SalesOrders { get; set; }

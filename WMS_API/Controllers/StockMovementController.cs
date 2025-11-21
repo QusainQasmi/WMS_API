@@ -14,15 +14,15 @@ namespace WMS_API.Controllers
         }
 
         [HttpGet("GetAllData")]
-        public async Task<ActionResult<IEnumerable<StockMovement>>> GetAllStockMovement()
+        public async Task<ActionResult<IEnumerable<StockMovements>>> GetAllStockMovement()
         {
-            return Ok(await _context.Stocks.ToListAsync());
+            return Ok(await _context.StockMovements.ToListAsync());
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<StockMovement>> GetStockById(int id)
+        public async Task<ActionResult<StockMovements>> GetStockById(int id)
         {
-            var _stockMovement = await _context.Stocks.FindAsync(id);
+            var _stockMovement = await _context.StockMovements.FindAsync(id);
 
             if (_stockMovement == null)
             {
@@ -33,29 +33,29 @@ namespace WMS_API.Controllers
         }
 
         [HttpPost("Add")]
-        public async Task<ActionResult<StockMovement>> AddStockMovement([FromBody] StockMovement _stockMovement)
+        public async Task<ActionResult<StockMovements>> AddStockMovement([FromBody] StockMovements _stockMovement)
         {
             if (_stockMovement == null)
             {
                 return BadRequest("No Stock Found!");
             }
 
-            _context.Stocks.Add(_stockMovement);
+            _context.StockMovements.Add(_stockMovement);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetStockById), new { MovementId = _stockMovement.MovementId }, _stockMovement);
         }
 
         [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult<StockMovement>> DeleteStock(int id)
+        public async Task<ActionResult<StockMovements>> DeleteStock(int id)
         {
-            var _stockMovement = await _context.Stocks.FindAsync(id);
+            var _stockMovement = await _context.StockMovements.FindAsync(id);
             if (_stockMovement == null)
             {
                 return NotFound(new { message = "Stock Not Found!" });
             }
 
-            _context.Stocks.Remove(_stockMovement);
+            _context.StockMovements.Remove(_stockMovement);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Stock Deleted Successfully" });
