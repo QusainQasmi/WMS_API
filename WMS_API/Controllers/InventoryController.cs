@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 using WMS_API.Data;
 using WMS_API.Models;
 
@@ -25,22 +26,11 @@ namespace WMS_API.Controllers
         {
             var inventoryList = new List<Inventory>();
 
-            var query = @"
-                SELECT 
-                    i.InventoryId,
-                    p.ProductId,
-                    p.Name AS ProductName,
-                    l.LocationId,
-                    l.LocationCode,
-                    i.Quantity
-                FROM Inventory i
-                INNER JOIN Products p ON i.ProductId = p.ProductId
-                INNER JOIN Locations l ON i.LocationId = l.LocationId;
-            ";
-
             using (var conn = new SqlConnection(_connectionString))
-            using (var cmd = new SqlCommand(query, conn))
+            using (var cmd = new SqlCommand("sp_GetInventoryLst", conn))
             {
+                cmd.CommandType = CommandType.StoredProcedure;
+
                 await conn.OpenAsync();
                 using (var reader = await cmd.ExecuteReaderAsync())
                 {
@@ -48,18 +38,19 @@ namespace WMS_API.Controllers
                     {
                         inventoryList.Add(new Inventory
                         {
-                            InventoryId = reader.GetInt32(0),
-                            ProductId = reader.GetInt32(1),
-                            ProductName = reader.GetString(2),
-                            LocationId = reader.GetInt32(3),
-                            LocationCode = reader.GetString(4),
-                            Quantity = reader.GetInt32(5)
+                            InventoryId = reader.GetInt32(reader.GetOrdinal("InventoryId")),
+                            ProductId = reader.GetInt32(reader.GetOrdinal("ProductId")),
+                            ProductName = reader.GetString(reader.GetOrdinal("ProductName")),
+                            LocationId = reader.GetInt32(reader.GetOrdinal("LocationId")),
+                            LocationCode = reader.GetString(reader.GetOrdinal("LocationCode")),
+                            Quantity = reader.GetInt32(reader.GetOrdinal("Quantity"))
                         });
                     }
                 }
             }
 
-            return inventoryList;
+            return Ok(inventoryList);
         }
+
     }
 }
