@@ -21,5 +21,7 @@ namespace WMS_API.Data
         public DbSet<SalesOrderDetail> SalesOrderDetails { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<City> City{ get; set; }
+
     }
 }
