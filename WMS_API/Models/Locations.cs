@@ -1,19 +1,47 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WMS_API.Models
 {
-    public class Locations
+    [Table("Locations")]
+    public class Location : BaseModel
     {
-        [Key]
-        public int LocationId { get; set; }
         [Required]
-        public int WarehouseId { get; set; }
-        [MaxLength(255)]
-        public string WarehouseName { get; set; } = string.Empty;
-        [MaxLength(255)]
-        public string LocationCode { get; set; }
-        [MaxLength(255)]
-        public string Description { get; set; }
+        [StringLength(10)]
+        public string UnCode { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(150)]
+        public string UnName { get; set; } = string.Empty;
+
+        [StringLength(250)]
+        public string? UnAddress { get; set; }
+
+        [StringLength(100)]
+        public string? City { get; set; }
+
+        [StringLength(100)]
+        public string? UnState { get; set; }
+
+        [StringLength(20)]
+        public string? PostalCode { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Country { get; set; } = string.Empty;
+
+        [Column(TypeName = "decimal(10,7)")]
+        public decimal? Latitude { get; set; }
+
+        [Column(TypeName = "decimal(10,7)")]
+        public decimal? Longitude { get; set; }
+        public bool IsPort { get; set; } = false;
+        public bool IsAirport { get; set; } = false;
+        public bool IsWarehouse { get; set; } = false;
+        public bool IsPickupPoint { get; set; } = false;
+        public bool IsDeliveryPoint { get; set; } = false;
+        public bool IsActive { get; set; } = true;
     }
+
 
 }
